@@ -33,7 +33,6 @@ Future<void> initialSetUp(StoreType storeType) async {
     ToDoStore todoStore;
     switch (storeType) {
       case StoreType.Hive:
-
         /// Initialize hive store for user model
         // todoStore = HiveToDoStore();
         // await todoStore.init({'storeName': 'Todos'});
@@ -49,9 +48,9 @@ Future<void> initialSetUp(StoreType storeType) async {
 
   // Second set up all the managers which the UI elements would contact.
   getIt.registerSingletonAsync(() async => UserManager(),
-      dependsOn: [UserStore]);
+      dependsOn: [UserStore, ToDoStore]);
   getIt.registerSingletonAsync(() async => ToDoManager(),
-      dependsOn: [ToDoStore]);
+      dependsOn: [UserManager]);
 }
 
 enum StoreType {

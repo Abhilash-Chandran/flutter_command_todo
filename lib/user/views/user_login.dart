@@ -63,16 +63,16 @@ class _UserLoginState extends State<UserLogin> {
                         child: Text('Show My Todos'),
                         onPressed: () async {
                           // create the user if the user doesn't exist already.
-                          final _existingUser = await _userManager
+                          var _currentUser = await _userManager
                               .getUserByName(_userNameController.text);
-                          if (_existingUser == null) {
-                            _userManager.createUserCommand(
-                                User(name: _userNameController.text));
+                          if (_currentUser == null) {
+                            _currentUser = User(name: _userNameController.text);
+                            _userManager.createUserCommand(_currentUser);
                           } else {
-                            _userManager.setCurrentUser(_existingUser);
-                            _toDoManager.getAllToDoForUser(
-                                _userManager.getCurrentUser().id);
+                            _userManager.setCurrentUser(_currentUser);
                           }
+                          // Fetch all the todo's for the current user.
+                          _toDoManager.getAllToDoForUser(_currentUser.id);
                           Navigator.pushNamed(context, '/todos');
                         },
                       ),

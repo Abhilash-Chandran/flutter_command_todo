@@ -1,5 +1,4 @@
 import 'package:flutter_command/flutter_command.dart';
-import 'package:flutter_command_todo/todo/managers/todo_manager.dart';
 import 'package:flutter_command_todo/user/models/user.dart';
 import 'package:flutter_command_todo/user/services/user_store.dart';
 import 'package:get_it/get_it.dart';
@@ -17,11 +16,6 @@ class UserManager {
       null, // this null should be handled in the ui. Or a dummy user object can
       // be returned and handled accordingly.
     );
-
-    /// Whenever a new user is created load all the todos for the user.
-    createUserCommand.listen((newUser, _) {
-      GetIt.I<ToDoManager>().getAllToDoForUser(newUser.id);
-    });
   }
 
   /// The core function that handle the creation of user.

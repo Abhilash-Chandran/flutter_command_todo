@@ -98,8 +98,6 @@ class _AddOrEditToDoState extends State<AddOrEditToDo> {
                       widget.toDo.dueDate = dueDate;
                       _todoManager.updateTodoCommand(widget.toDo);
                     }
-                    _todoManager
-                        .getAllToDoForUser(_userManager.getCurrentUser().id);
                     Navigator.pop(context);
                   },
                   child: Text('Save Todo'),

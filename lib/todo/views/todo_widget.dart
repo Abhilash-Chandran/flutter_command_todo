@@ -74,7 +74,6 @@ class _ToDoItemState extends State<ToDoItem> {
                 icon: Icon(Icons.delete_forever_rounded),
                 onPressed: () {
                   _toDoManager.deleteTodoCommand(widget.toDo);
-                  _toDoManager.getAllToDoForUser(widget.toDo.userId);
                 },
               ),
             ),
