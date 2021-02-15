@@ -1,3 +1,4 @@
+import 'package:flutter_command_todo/commons/backend/base_hive_store.dart';
 import 'package:flutter_command_todo/commons/backend/base_in_memory_store.dart';
 import 'package:flutter_command_todo/commons/backend/base_store.dart';
 import 'package:flutter_command_todo/todo/models/todo.dart';
@@ -19,4 +20,10 @@ class IMToDoStore extends InMemoryStore<ToDo> implements ToDoStore {
   }
 }
 
-// class HiveToDoStore extends HiveStore<ToDo> implements ToDoStore {}
+class HiveToDoStore extends HiveStore<ToDo> implements ToDoStore {
+  @override
+  Future<List<ToDo>> fetchAllTodosByUserId(String userId) {
+
+    return [...objBox.values]
+  }
+}
