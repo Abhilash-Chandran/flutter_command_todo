@@ -9,6 +9,8 @@ class UserManager {
 
   Command<User, User> createUserCommand;
 
+  Command<User, User> setCurrentUserCommand;
+
   // Command<String, bool> userExistsCommand;
   UserManager() {
     createUserCommand = Command.createAsync<User, User>(
@@ -16,13 +18,17 @@ class UserManager {
       null, // this null should be handled in the ui. Or a dummy user object can
       // be returned and handled accordingly.
     );
+    setCurrentUserCommand = Command.createSync<User, User>((currentUser) {
+      setCurrentUser(currentUser);
+      return currentUser;
+    }, null);
   }
 
   /// The core function that handle the creation of user.
   Future<User> createUser(User user) async {
     // Save the user to the store.
     User _newUser = await _userStore.add(user);
-    setCurrentUser(_newUser);
+    setCurrentUserCommand(_newUser);
     return _newUser;
   }
 

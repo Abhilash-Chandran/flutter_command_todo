@@ -69,7 +69,7 @@ class _UserLoginState extends State<UserLogin> {
                             _currentUser = User(name: _userNameController.text);
                             _userManager.createUserCommand(_currentUser);
                           } else {
-                            _userManager.setCurrentUser(_currentUser);
+                            _userManager.setCurrentUserCommand(_currentUser);
                           }
                           // Fetch all the todo's for the current user.
                           _toDoManager.getAllToDoForUser(_currentUser.id);
