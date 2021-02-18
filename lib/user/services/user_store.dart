@@ -1,3 +1,4 @@
+import 'package:flutter_command_todo/commons/backend/base_hive_store.dart';
 import 'package:flutter_command_todo/commons/backend/base_in_memory_store.dart';
 import 'package:flutter_command_todo/commons/backend/base_store.dart';
 import 'package:flutter_command_todo/user/models/user.dart';
@@ -19,7 +20,7 @@ class IMUserStore extends InMemoryStore<User> implements UserStore {
   /// Not the best implementation but for demo projects this is ok. :)
   @override
   Future<User> getUserByName(String userName) async {
-    return allObjects.firstWhere((element) => element.name == userName,
+    return allObjects?.firstWhere((element) => element.name == userName,
         orElse: () => null);
   }
 
@@ -29,10 +30,16 @@ class IMUserStore extends InMemoryStore<User> implements UserStore {
 
 /// A Store implementation using Hive as backend.
 
-// class HiveUserStore extends HiveStore<User> implements UserStore {
-//   @override
-//   Future<bool> userExists(String name) {
-//     // TODO: implement userExists
-//     throw UnimplementedError();
-//   }
-// }
+class HiveUserStore extends HiveStore<User> implements UserStore {
+  @override
+  User currentUser;
+
+  @override
+  Future<User> getUserByName(String name) async {
+    final user = hiveObjBox.values?.firstWhere(
+      (element) => element.name == name,
+      orElse: () => null,
+    );
+    return user;
+  }
+}

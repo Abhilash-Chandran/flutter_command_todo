@@ -14,7 +14,7 @@ class IMToDoStore extends InMemoryStore<ToDo> implements ToDoStore {
   @override
   Future<List<ToDo>> fetchAllTodosByUserId(String userId) async {
     final allTodos =
-        this.allObjects.where((element) => element.userId == userId);
+        this.allObjects?.where((element) => element.userId == userId);
     // return allTodos;
     return [...allTodos];
   }
@@ -22,8 +22,9 @@ class IMToDoStore extends InMemoryStore<ToDo> implements ToDoStore {
 
 class HiveToDoStore extends HiveStore<ToDo> implements ToDoStore {
   @override
-  Future<List<ToDo>> fetchAllTodosByUserId(String userId) {
-
-    return [...objBox.values]
+  Future<List<ToDo>> fetchAllTodosByUserId(String userId) async {
+    final results =
+        hiveObjBox.values.where((element) => element.userId == userId);
+    return [...results];
   }
 }
