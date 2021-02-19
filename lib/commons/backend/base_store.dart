@@ -1,3 +1,5 @@
+import 'package:flutter_command_todo/objectbox.g.dart';
+
 /// An abstract base class that reresents what are the possible operations or
 /// methods that can performed in a store of specfic type.
 ///
@@ -31,4 +33,8 @@ abstract class StoreDao<T> {
 ///
 abstract class StoreObject {
   String get id;
+}
+
+abstract class ObjectBoxStoreObject extends StoreObject {
+  int get oboxId;
 }
