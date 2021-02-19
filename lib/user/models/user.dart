@@ -1,6 +1,5 @@
 import 'package:flutter_command_todo/commons/backend/base_store.dart';
 import 'package:hive/hive.dart';
-import 'package:uuid/uuid.dart';
 import 'package:meta/meta.dart';
 
 part 'user.g.dart';
@@ -12,7 +11,10 @@ class User extends StoreObject {
   @HiveField(1)
   String name;
 
-  User({@required this.name}) : id = Uuid().v4();
+  User({
+    @required this.id,
+    @required this.name,
+  });
 
   @override
   bool operator ==(o) => o is User && o.id == id && o.name == name;
