@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 
 void main() {
   // use StoreType.Hive for Hive based backend.
-  initialSetUp(StoreType.InMemory);
+  initialSetUp(StoreType.Hive);
   runApp(Loader());
 }
 

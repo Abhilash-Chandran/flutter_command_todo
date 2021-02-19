@@ -1,25 +1,33 @@
 import 'package:flutter_command_todo/todo/managers/todo_manager.dart';
+import 'package:flutter_command_todo/todo/models/todo.dart';
 import 'package:flutter_command_todo/todo/services/todo_store.dart';
 import 'package:flutter_command_todo/user/managers/user_manager.dart';
+import 'package:flutter_command_todo/user/models/user.dart';
 import 'package:flutter_command_todo/user/services/user_store.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 /// Get it service locator instance
 final getIt = GetIt.instance;
 
 /// Intialize and instantiate various services like the backend and the managers.
 Future<void> initialSetUp(StoreType storeType) async {
-  // First set up and register the backend services.
-
+  // Pre setup e.g. initialize Hive
+  if (storeType == StoreType.Hive) {
+    // Intialize Hive and register adapters.
+    await Hive.initFlutter();
+    _registerHiveAdapters();
+  }
+  // Now set up and register the backend services.
   // Set up the User object store.
   getIt.registerSingletonAsync<UserStore>(() async {
     UserStore userStore;
     switch (storeType) {
       case StoreType.Hive:
-
-        /// Initialize hive store for user model
-        // userStore = HiveUserStore();
-        // await userStore.init({'storeName': 'Users'});
+        // Initialize hive store for user model
+        userStore = HiveUserStore();
+        await userStore.init({'storeName': 'Users'});
         break;
       default:
         userStore = IMUserStore();
@@ -33,9 +41,10 @@ Future<void> initialSetUp(StoreType storeType) async {
     ToDoStore todoStore;
     switch (storeType) {
       case StoreType.Hive:
+
         /// Initialize hive store for user model
-        // todoStore = HiveToDoStore();
-        // await todoStore.init({'storeName': 'Todos'});
+        todoStore = HiveToDoStore();
+        await todoStore.init({'storeName': 'Todos'});
         break;
       // case StoreType.Firebase
       // Handle initialization of Firestore.
@@ -51,6 +60,11 @@ Future<void> initialSetUp(StoreType storeType) async {
       dependsOn: [UserStore, ToDoStore]);
   getIt.registerSingletonAsync(() async => ToDoManager(),
       dependsOn: [UserManager]);
+}
+
+void _registerHiveAdapters() {
+  Hive.registerAdapter(ToDoAdapter());
+  Hive.registerAdapter(UserAdapter());
 }
 
 enum StoreType {

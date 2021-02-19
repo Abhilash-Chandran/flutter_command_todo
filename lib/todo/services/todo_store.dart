@@ -1,3 +1,4 @@
+import 'package:flutter_command_todo/commons/backend/base_hive_store.dart';
 import 'package:flutter_command_todo/commons/backend/base_in_memory_store.dart';
 import 'package:flutter_command_todo/commons/backend/base_store.dart';
 import 'package:flutter_command_todo/todo/models/todo.dart';
@@ -13,10 +14,17 @@ class IMToDoStore extends InMemoryStore<ToDo> implements ToDoStore {
   @override
   Future<List<ToDo>> fetchAllTodosByUserId(String userId) async {
     final allTodos =
-        this.allObjects.where((element) => element.userId == userId);
+        this.allObjects?.where((element) => element.userId == userId);
     // return allTodos;
     return [...allTodos];
   }
 }
 
-// class HiveToDoStore extends HiveStore<ToDo> implements ToDoStore {}
+class HiveToDoStore extends HiveStore<ToDo> implements ToDoStore {
+  @override
+  Future<List<ToDo>> fetchAllTodosByUserId(String userId) async {
+    final results =
+        hiveObjBox.values.where((element) => element.userId == userId);
+    return [...results];
+  }
+}
