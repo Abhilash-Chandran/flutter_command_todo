@@ -1,6 +1,5 @@
 import 'package:flutter_command_todo/commons/backend/base_store.dart';
 import 'package:meta/meta.dart';
-import 'package:uuid/uuid.dart';
 
 /// Model class to hold the ToDo Object.
 class ToDo extends StoreObject {
@@ -20,11 +19,12 @@ class ToDo extends StoreObject {
   String userId;
 
   ToDo({
+    @required this.id,
     @required this.description,
     this.dueDate,
     this.completed = false,
     @required this.userId,
-  }) : id = Uuid().v4(); // Initializes id with a unique value.
+  }); // Initializes id with a unique value.
 
   @override
   String toString() =>
@@ -35,10 +35,12 @@ class ToDo extends StoreObject {
       o is ToDo &&
       o.description == description &&
       o.completed == completed &&
-      o.dueDate == dueDate;
+      o.dueDate == dueDate &&
+      o.id == id;
 
   @override
   int get hashCode =>
+      id.hashCode ^
       description.hashCode ^
       userId.hashCode ^
       completed.hashCode ^

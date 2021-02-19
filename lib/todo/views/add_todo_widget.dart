@@ -5,6 +5,7 @@ import 'package:flutter_command_todo/todo/managers/todo_manager.dart';
 import 'package:flutter_command_todo/todo/models/todo.dart';
 import 'package:flutter_command_todo/user/managers/user_manager.dart';
 import 'package:get_it/get_it.dart';
+import 'package:uuid/uuid.dart';
 
 class AddOrEditToDo extends StatefulWidget {
   final ToDo toDo;
@@ -88,6 +89,7 @@ class _AddOrEditToDoState extends State<AddOrEditToDo> {
                     if (widget.toDo == null) {
                       _todoManager.addTodoCommand(
                         ToDo(
+                          id: Uuid().v4(),
                           description: _controller.text,
                           dueDate: dueDate,
                           userId: _userManager.getCurrentUser().id,
