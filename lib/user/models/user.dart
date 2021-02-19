@@ -1,6 +1,5 @@
 import 'package:flutter_command_todo/commons/backend/base_store.dart';
 import 'package:objectbox/objectbox.dart';
-import 'package:uuid/uuid.dart';
 import 'package:meta/meta.dart';
 
 @Entity()
@@ -11,7 +10,10 @@ class User extends ObjectBoxStoreObject {
   @Id()
   int oboxId;
 
-  User({@required this.name}) : id = Uuid().v4();
+  User({
+    @required this.id,
+    @required this.name,
+  });
 
   @override
   bool operator ==(o) =>

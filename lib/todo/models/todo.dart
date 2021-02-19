@@ -1,7 +1,8 @@
 import 'package:flutter_command_todo/commons/backend/base_store.dart';
 import 'package:meta/meta.dart';
+
 import 'package:objectbox/objectbox.dart';
-import 'package:uuid/uuid.dart';
+
 
 @Entity()
 
@@ -26,11 +27,12 @@ class ToDo extends ObjectBoxStoreObject {
   String userId;
 
   ToDo({
+    @required this.id,
     @required this.description,
     this.dueDate,
     this.completed = false,
     @required this.userId,
-  }) : id = Uuid().v4(); // Initializes id with a unique value.
+  }); // Initializes id with a unique value.
 
   @override
   String toString() =>
@@ -47,6 +49,7 @@ class ToDo extends ObjectBoxStoreObject {
 
   @override
   int get hashCode =>
+      id.hashCode ^
       description.hashCode ^
       userId.hashCode ^
       completed.hashCode ^

@@ -3,6 +3,7 @@ import 'package:flutter_command_todo/todo/managers/todo_manager.dart';
 import 'package:flutter_command_todo/user/managers/user_manager.dart';
 import 'package:flutter_command_todo/user/models/user.dart';
 import 'package:get_it/get_it.dart';
+import 'package:uuid/uuid.dart';
 
 class UserLogin extends StatefulWidget {
   @override
@@ -66,10 +67,13 @@ class _UserLoginState extends State<UserLogin> {
                           var _currentUser = await _userManager
                               .getUserByName(_userNameController.text);
                           if (_currentUser == null) {
-                            _currentUser = User(name: _userNameController.text);
+                            _currentUser = User(
+                              id: Uuid().v4(),
+                              name: _userNameController.text,
+                            );
                             _userManager.createUserCommand(_currentUser);
                           } else {
-                            _userManager.setCurrentUser(_currentUser);
+                            _userManager.setCurrentUserCommand(_currentUser);
                           }
                           // Fetch all the todo's for the current user.
                           _toDoManager.getAllToDoForUser(_currentUser.id);

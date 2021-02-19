@@ -5,6 +5,7 @@ import 'package:flutter_command_todo/todo/models/todo.dart';
 import 'package:flutter_command_todo/todo/views/add_todo_widget.dart';
 import 'package:flutter_command_todo/todo/views/todo_widget.dart';
 import 'package:flutter_command_todo/user/managers/user_manager.dart';
+import 'package:flutter_command_todo/user/models/user.dart';
 import 'package:get_it/get_it.dart';
 
 class ToDos extends StatefulWidget {
@@ -34,36 +35,40 @@ class _ToDosState extends State<ToDos> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      'Hi ${_userManager.getCurrentUser().name}',
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
-                    Expanded(
-                      child: FractionallySizedBox(
-                        heightFactor: 0.85,
-                        widthFactor: 0.95,
-                        child: CommandBuilder<void, List<ToDo>>(
-                            command: _toDoManager.getAllToDoForUser,
-                            onData: (context, todos, _) {
-                              return FractionallySizedBox(
-                                widthFactor: 0.9,
-                                // heightFactor: 0.85,
-                                child: Card(
-                                  color: Colors.white70,
-                                  child: ListView(
-                                    shrinkWrap: true,
-                                    children:
-                                        todos.map((e) => ToDoItem(e)).toList(),
-                                  ),
-                                ),
-                              );
-                            }),
+                CommandBuilder<User, User>(
+                  command: _userManager.setCurrentUserCommand,
+                  onData: (_, _currentUser, __) => Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        'Hi ${_currentUser?.name}',
+                        style: Theme.of(context).textTheme.headline4,
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        child: FractionallySizedBox(
+                          heightFactor: 0.85,
+                          widthFactor: 0.95,
+                          child: CommandBuilder<void, List<ToDo>>(
+                              command: _toDoManager.getAllToDoForUser,
+                              onData: (context, todos, _) {
+                                return FractionallySizedBox(
+                                  widthFactor: 0.9,
+                                  // heightFactor: 0.85,
+                                  child: Card(
+                                    color: Colors.white70,
+                                    child: ListView(
+                                      shrinkWrap: true,
+                                      children: todos
+                                          .map((e) => ToDoItem(e))
+                                          .toList(),
+                                    ),
+                                  ),
+                                );
+                              }),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 Align(
                   alignment: Alignment.topRight,
