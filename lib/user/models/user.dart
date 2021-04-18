@@ -1,6 +1,5 @@
 import 'package:flutter_command_todo/commons/backend/base_store.dart';
 import 'package:hive/hive.dart';
-import 'package:meta/meta.dart';
 
 part 'user.g.dart';
 
@@ -12,8 +11,8 @@ class User extends StoreObject {
   String name;
 
   User({
-    @required this.id,
-    @required this.name,
+    required this.id,
+    required this.name,
   });
 
   @override

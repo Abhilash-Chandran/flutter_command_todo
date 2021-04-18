@@ -9,9 +9,9 @@ abstract class StoreDao<T> {
   /// Initialize the store object either in memory or in a database.
   Future<bool> init(Map<String, dynamic> options);
 
-  Future<T> add(T obj);
-  Future<T> get(String id);
-  Future<T> update(T obj);
+  Future<T?> add(T obj);
+  Future<T?> get(String id);
+  Future<T?> update(T obj);
   Future<bool> delete(T obj);
   Future<bool> deleteAll();
 

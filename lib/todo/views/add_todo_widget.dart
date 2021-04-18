@@ -8,7 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:uuid/uuid.dart';
 
 class AddOrEditToDo extends StatefulWidget {
-  final ToDo toDo;
+  final ToDo? toDo;
   AddOrEditToDo({this.toDo});
   @override
   _AddOrEditToDoState createState() => _AddOrEditToDoState();
@@ -19,22 +19,30 @@ class _AddOrEditToDoState extends State<AddOrEditToDo> {
 
   ToDoManager _todoManager = GetIt.I<ToDoManager>();
   UserManager _userManager = GetIt.I<UserManager>();
+  late ToDo tempTodo;
+  DateTime? dueDate;
 
-  DateTime dueDate;
   @override
   void initState() {
     super.initState();
-    if (widget.toDo != null) {
-      _controller.text = widget.toDo.description;
-      dueDate = widget.toDo.dueDate;
-    }
+    tempTodo = widget.toDo ??
+        ToDo(
+          id: Uuid().v4(),
+          description: '',
+          dueDate: dueDate,
+          userId: _userManager.getCurrentUser().id,
+        );
+    _controller.text = tempTodo.description;
+    dueDate = tempTodo.dueDate;
   }
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -86,18 +94,12 @@ class _AddOrEditToDoState extends State<AddOrEditToDo> {
                     onPrimary: Colors.black,
                   ),
                   onPressed: () {
+                    tempTodo.description = _controller.text;
+                    tempTodo.dueDate = dueDate;
+                    // Decides whether to update an existing todo or
                     if (widget.toDo == null) {
-                      _todoManager.addTodoCommand(
-                        ToDo(
-                          id: Uuid().v4(),
-                          description: _controller.text,
-                          dueDate: dueDate,
-                          userId: _userManager.getCurrentUser().id,
-                        ),
-                      );
+                      _todoManager.addTodoCommand(tempTodo);
                     } else {
-                      widget.toDo.description = _controller.text;
-                      widget.toDo.dueDate = dueDate;
                       _todoManager.updateTodoCommand(widget.toDo);
                     }
                     Navigator.pop(context);

@@ -66,7 +66,7 @@ class _UserLoginState extends State<UserLogin> {
                           // create the user if the user doesn't exist already.
                           var _currentUser = await _userManager
                               .getUserByName(_userNameController.text);
-                          if (_currentUser == null) {
+                          if (_currentUser.name.isEmpty) {
                             _currentUser = User(
                               id: Uuid().v4(),
                               name: _userNameController.text,

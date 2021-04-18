@@ -1,7 +1,7 @@
 import 'package:flutter_command_todo/commons/backend/base_store.dart';
 
 class InMemoryStore<T extends StoreObject> implements StoreDao<T> {
-  List<T> allObjects;
+  List<T> allObjects = [];
 
   Future<T> add(T obj) async {
     allObjects.add(obj);
@@ -10,7 +10,7 @@ class InMemoryStore<T extends StoreObject> implements StoreDao<T> {
 
   Future<bool> delete(T obj) async {
     allObjects.removeWhere((element) => element.id == obj.id);
-    return allObjects.contains(obj);
+    return !allObjects.contains(obj);
   }
 
   Future<T> update(T obj) async {
@@ -20,7 +20,7 @@ class InMemoryStore<T extends StoreObject> implements StoreDao<T> {
   }
 
   Future<List<T>> fetchAll() async {
-    return allObjects;
+    return [...allObjects];
   }
 
   Future<bool> init(Map<String, dynamic> options) async {

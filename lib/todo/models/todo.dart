@@ -1,6 +1,5 @@
 import 'package:flutter_command_todo/commons/backend/base_store.dart';
 import 'package:hive/hive.dart';
-import 'package:meta/meta.dart';
 
 part 'todo.g.dart';
 
@@ -21,18 +20,18 @@ class ToDo extends StoreObject {
 
   /// Due Date for this todo.
   @HiveField(3)
-  DateTime dueDate;
+  DateTime? dueDate;
 
   /// id of the user who created this todo.
   @HiveField(4)
   String userId;
-  
+
   ToDo({
-    @required this.id,
-    @required this.description,
+    required this.id,
+    required this.description,
+    required this.userId,
     this.dueDate,
     this.completed = false,
-    @required this.userId,
   }); // Initializes id with a unique value.
 
   @override

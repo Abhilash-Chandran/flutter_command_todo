@@ -14,7 +14,7 @@ class IMToDoStore extends InMemoryStore<ToDo> implements ToDoStore {
   @override
   Future<List<ToDo>> fetchAllTodosByUserId(String userId) async {
     final allTodos =
-        this.allObjects?.where((element) => element.userId == userId);
+        this.allObjects.where((element) => element.userId == userId);
     // return allTodos;
     return [...allTodos];
   }

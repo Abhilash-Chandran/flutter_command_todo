@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 
 void main() {
   // use StoreType.Hive for Hive based backend.
-  initialSetUp(StoreType.Hive);
+  initialSetUp(StoreType.InMemory);
   runApp(Loader());
 }
 
@@ -23,15 +23,19 @@ class Loader extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          if (snapshot.hasData) {
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.done) {
             return TodoApp();
           }
           if (snapshot.hasError) {
-            return Center(
-              child: Card(
-                child: Center(
-                  child: Text('''Some Thing went wrong while loading the app.
-                 Please try again later'''),
+            return Directionality(
+              textDirection: TextDirection.ltr,
+              child: Center(
+                child: Card(
+                  child: Center(
+                    child: Text('''Some Thing went wrong while loading the app.
+                   Please try again later'''),
+                  ),
                 ),
               ),
             );
