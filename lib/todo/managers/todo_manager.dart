@@ -21,7 +21,9 @@ class ToDoManager {
     addTodoCommand = Command.createAsync<ToDo, ToDo?>(addTodo, emptyTodo);
     // Deletes a todo from the backend
     deleteTodoCommand = Command.createAsync<ToDo, bool>((todo) async {
-      return await _toDoStore.delete(todo!);
+      bool delResult = await _toDoStore.delete(todo!);
+      print(delResult);
+      return delResult;
     }, false);
     _userManager = GetIt.I<UserManager>();
     // Updates the todo
