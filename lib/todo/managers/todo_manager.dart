@@ -6,28 +6,31 @@ import 'package:get_it/get_it.dart';
 
 class ToDoManager {
   ToDoStore _toDoStore = GetIt.I<ToDoStore>();
-  UserManager _userManager;
-  Command<ToDo, ToDo> addTodoCommand;
-  Command<ToDo, bool> deleteTodoCommand;
-  Command<ToDo, ToDo> updateTodoCommand;
-  Command<String, List<ToDo>> getAllToDoForUser;
+  late UserManager _userManager;
+  late Command<ToDo, ToDo?> addTodoCommand;
+  late Command<ToDo, bool> deleteTodoCommand;
+  late Command<ToDo, ToDo?> updateTodoCommand;
+  late Command<String, List<ToDo>> getAllToDoForUser;
+  ToDo emptyTodo = ToDo(
+    description: '',
+    id: '',
+    userId: '',
+  );
   ToDoManager() {
     // Adds a todo to the backend
-    addTodoCommand = Command.createAsync<ToDo, ToDo>(
-        (todo) async => _toDoStore.add(todo), null);
+    addTodoCommand = Command.createAsync<ToDo, ToDo?>(addTodo, emptyTodo);
     // Deletes a todo from the backend
     deleteTodoCommand = Command.createAsync<ToDo, bool>(
-        (todo) async => _toDoStore.delete(todo), null);
+        (todo) async => _toDoStore.delete(todo!), false);
     _userManager = GetIt.I<UserManager>();
     // Updates the todo
     // If the signature of the function being wrapped is same, following is also
     // valid.
-    updateTodoCommand =
-        Command.createAsync<ToDo, ToDo>(_toDoStore.update, null);
+    updateTodoCommand = Command.createAsync<ToDo, ToDo?>(updateTodo, emptyTodo);
 
     // Retrieves all the Todos for the given userId.
     getAllToDoForUser = Command.createAsync<String, List<ToDo>>(
-        _toDoStore.fetchAllTodosByUserId, []);
+        (userName) async => _toDoStore.fetchAllTodosByUserId(userName!), []);
 
     // Following listeners reloads the todo Lists in UI.
     addTodoCommand.listen((__, _) {
@@ -39,5 +42,13 @@ class ToDoManager {
     deleteTodoCommand.listen((__, _) {
       getAllToDoForUser(_userManager.getCurrentUser().id);
     });
+  }
+
+  Future<ToDo?> addTodo(ToDo? todo) async {
+    return await _toDoStore.add(todo!);
+  }
+
+  Future<ToDo?> updateTodo(ToDo? todo) async {
+    return await _toDoStore.update(todo!);
   }
 }
