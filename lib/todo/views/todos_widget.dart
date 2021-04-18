@@ -23,9 +23,7 @@ class _ToDosState extends State<ToDos> {
         backgroundColor: Colors.accents.first,
         onPressed: () {
           showModalBottomSheet(
-              isScrollControlled: true,
-              context: context,
-              builder: (context) => AddOrEditToDo());
+              context: context, builder: (context) => AddOrEditToDo());
         },
         child: Icon(Icons.add),
       ),
@@ -43,7 +41,7 @@ class _ToDosState extends State<ToDos> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        'Hi ${_currentUser.name}',
+                        'Hi ${_currentUser?.name}',
                         style: Theme.of(context).textTheme.headline4,
                       ),
                       Expanded(

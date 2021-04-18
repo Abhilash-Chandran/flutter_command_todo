@@ -11,34 +11,34 @@ import 'package:flutter_command_todo/user/models/user.dart';
 /// away and add model specific functionalities. for eg. [userExists] is a
 /// special use case which is not necessary for the ToDo model.
 abstract class UserStore implements StoreDao<User> {
-  late User currentUser;
-  Future<User?> getUserByName(String name);
+  User currentUser;
+  Future<User> getUserByName(String name);
 }
 
 class IMUserStore extends InMemoryStore<User> implements UserStore {
   /// Verifies if the user already exists or not.
   /// Not the best implementation but for demo projects this is ok. :)
   @override
-  Future<User?> getUserByName(String userName) async {
-    return allObjects.firstWhere((element) => element.name == userName,
-        orElse: () => User(id: '', name: ''));
+  Future<User> getUserByName(String userName) async {
+    return allObjects?.firstWhere((element) => element.name == userName,
+        orElse: () => null);
   }
 
   @override
-  late User currentUser;
+  User currentUser;
 }
 
 /// A Store implementation using Hive as backend.
 
 class HiveUserStore extends HiveStore<User> implements UserStore {
   @override
-  late User currentUser;
+  User currentUser;
 
   @override
-  Future<User?> getUserByName(String name) async {
-    final user = hiveObjBox.values.firstWhere(
+  Future<User> getUserByName(String name) async {
+    final user = hiveObjBox.values?.firstWhere(
       (element) => element.name == name,
-      orElse: () => User(id: '', name: ''),
+      orElse: () => null,
     );
     return user;
   }

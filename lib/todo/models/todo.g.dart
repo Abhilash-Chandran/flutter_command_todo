@@ -19,9 +19,9 @@ class ToDoAdapter extends TypeAdapter<ToDo> {
     return ToDo(
       id: fields[0] as String,
       description: fields[1] as String,
-      userId: fields[4] as String,
-      dueDate: fields[3] as DateTime?,
+      dueDate: fields[3] as DateTime,
       completed: fields[2] as bool,
+      userId: fields[4] as String,
     );
   }
 

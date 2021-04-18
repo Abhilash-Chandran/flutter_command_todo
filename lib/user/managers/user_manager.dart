@@ -7,37 +7,34 @@ class UserManager {
   /// Retrieve the user Store.
   UserStore _userStore = GetIt.I<UserStore>();
 
-  late Command<User, User> createUserCommand;
+  Command<User, User> createUserCommand;
 
-  late Command<User, User> setCurrentUserCommand;
-
-  User emptyUser = User(id: '', name: '');
+  Command<User, User> setCurrentUserCommand;
 
   // Command<String, bool> userExistsCommand;
   UserManager() {
     createUserCommand = Command.createAsync<User, User>(
       createUser,
-      emptyUser, // this null should be handled in the ui. Or a dummy user object can
+      null, // this null should be handled in the ui. Or a dummy user object can
       // be returned and handled accordingly.
     );
     setCurrentUserCommand = Command.createSync<User, User>((currentUser) {
       setCurrentUser(currentUser);
       return currentUser;
-    }, emptyUser);
+    }, null);
   }
 
   /// The core function that handle the creation of user.
-  Future<User> createUser(User? user) async {
+  Future<User> createUser(User user) async {
     // Save the user to the store.
-    User _newUser = await _userStore.add(user!) ?? emptyUser;
+    User _newUser = await _userStore.add(user);
     setCurrentUserCommand(_newUser);
     return _newUser;
   }
 
   /// Verifies if the user name already exists in the bakend and returns it.
-  Future<User> getUserByName(String userName) async {
-    User user = await _userStore.getUserByName(userName) ?? emptyUser;
-    return user;
+  Future<User> getUserByName(String userName) {
+    return _userStore.getUserByName(userName);
   }
 
   setCurrentUser(User user) {
