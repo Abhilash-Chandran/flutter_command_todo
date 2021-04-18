@@ -4,9 +4,9 @@ import 'package:flutter_command_todo/todo/views/todos_widget.dart';
 import 'package:flutter_command_todo/user/views/user_login.dart';
 import 'package:get_it/get_it.dart';
 
-void main() async {
+void main() {
   // use StoreType.Hive for Hive based backend.
-  await initialSetUp(StoreType.Hive);
+  initialSetUp(StoreType.Hive);
   runApp(Loader());
 }
 
@@ -14,16 +14,16 @@ class Loader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
-        future: GetIt.instance.allReady(),
+        future: GetIt.instance.allReady(
+          timeout: Duration(seconds: 5),
+        ),
         builder: (context, snapshot) {
-          print(snapshot);
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
-          if (snapshot.hasData &&
-              snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
             return TodoApp();
           }
           if (snapshot.hasError) {

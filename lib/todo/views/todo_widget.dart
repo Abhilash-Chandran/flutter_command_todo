@@ -37,7 +37,7 @@ class _ToDoItemState extends State<ToDoItem> {
                 ),
                 onChanged: (newValue) {
                   setState(() {
-                    widget.toDo.completed = newValue ?? false;
+                    widget.toDo.completed = newValue;
                     _toDoManager.updateTodoCommand(widget.toDo);
                     // selected = newValue;
                   });
