@@ -21,6 +21,7 @@ class _AddOrEditToDoState extends State<AddOrEditToDo> {
   UserManager _userManager = GetIt.I<UserManager>();
   late ToDo tempTodo;
   DateTime? dueDate;
+
   @override
   void initState() {
     super.initState();
@@ -44,7 +45,6 @@ class _AddOrEditToDoState extends State<AddOrEditToDo> {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          // mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
               controller: _controller,
@@ -96,7 +96,7 @@ class _AddOrEditToDoState extends State<AddOrEditToDo> {
                   onPressed: () {
                     tempTodo.description = _controller.text;
                     tempTodo.dueDate = dueDate;
-                    // Decides whether to update an existing todo or create a new todo
+                    // Decides whether to update an existing todo or
                     if (widget.toDo == null) {
                       _todoManager.addTodoCommand(tempTodo);
                     } else {

@@ -29,7 +29,7 @@ class HiveStore<T extends StoreObject> implements StoreDao<T> {
 
   Future<bool> delete(T obj) async {
     await hiveObjBox.delete(obj.id);
-    return hiveObjBox.containsKey(obj.id);
+    return !hiveObjBox.containsKey(obj.id);
   }
 
   Future<bool> deleteAll() async {

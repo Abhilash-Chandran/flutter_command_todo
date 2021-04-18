@@ -20,13 +20,16 @@ class ToDoManager {
     // Adds a todo to the backend
     addTodoCommand = Command.createAsync<ToDo, ToDo?>(addTodo, emptyTodo);
     // Deletes a todo from the backend
-    deleteTodoCommand = Command.createAsync<ToDo, bool>(
-        (todo) async => _toDoStore.delete(todo!), false);
+    deleteTodoCommand = Command.createAsync<ToDo, bool>((todo) async {
+      bool delResult = await _toDoStore.delete(todo!);
+      print(delResult);
+      return delResult;
+    }, false);
     _userManager = GetIt.I<UserManager>();
     // Updates the todo
     // If the signature of the function being wrapped is same, following is also
     // valid.
-    updateTodoCommand = Command.createAsync<ToDo, ToDo?>(updateTodo, emptyTodo);
+    updateTodoCommand = Command.createAsync<ToDo, ToDo?>(updateTodo, null);
 
     // Retrieves all the Todos for the given userId.
     getAllToDoForUser = Command.createAsync<String, List<ToDo>>(

@@ -19,7 +19,6 @@ class _UserLoginState extends State<UserLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: Container(
           color: Colors.amberAccent,
@@ -55,32 +54,33 @@ class _UserLoginState extends State<UserLogin> {
                       ),
                     ),
                     Spacer(),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.accents.first,
-                        onPrimary: Colors.black,
+                    Padding(
+                      padding: const EdgeInsets.all(32.0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.accents.first,
+                          onPrimary: Colors.black,
+                        ),
+                        child: Text('Show My Todos'),
+                        onPressed: () async {
+                          // create the user if the user doesn't exist already.
+                          var _currentUser = await _userManager
+                              .getUserByName(_userNameController.text);
+                          if (_currentUser.name.isEmpty) {
+                            _currentUser = User(
+                              id: Uuid().v4(),
+                              name: _userNameController.text,
+                            );
+                            _userManager.createUserCommand(_currentUser);
+                          } else {
+                            _userManager.setCurrentUserCommand(_currentUser);
+                          }
+                          // Fetch all the todo's for the current user.
+                          _toDoManager.getAllToDoForUser(_currentUser.id);
+                          Navigator.pushNamed(context, '/todos');
+                        },
                       ),
-                      child: Text('Show My Todos'),
-                      onPressed: () async {
-                        // create the user if the user doesn't exist already.
-                        var _currentUser = await _userManager
-                            .getUserByName(_userNameController.text);
-                        // Empty user name means no user is logged in.
-                        if (_currentUser.name.isEmpty) {
-                          _currentUser = User(
-                            id: Uuid().v4(),
-                            name: _userNameController.text,
-                          );
-                          _userManager.createUserCommand(_currentUser);
-                        } else {
-                          _userManager.setCurrentUserCommand(_currentUser);
-                        }
-                        // Fetch all the todo's for the current user.
-                        _toDoManager.getAllToDoForUser(_currentUser.id);
-                        Navigator.pushNamed(context, '/todos');
-                      },
                     ),
-                    Spacer(),
                   ],
                 ),
               ),

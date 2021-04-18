@@ -10,7 +10,7 @@ class InMemoryStore<T extends StoreObject> implements StoreDao<T> {
 
   Future<bool> delete(T obj) async {
     allObjects.removeWhere((element) => element.id == obj.id);
-    return allObjects.contains(obj);
+    return !allObjects.contains(obj);
   }
 
   Future<T> update(T obj) async {
@@ -19,11 +19,12 @@ class InMemoryStore<T extends StoreObject> implements StoreDao<T> {
     return allObjects[objIndex];
   }
 
-  Future<List<T> > fetchAll() async {
-    return allObjects;
+  Future<List<T>> fetchAll() async {
+    return [...allObjects];
   }
 
   Future<bool> init(Map<String, dynamic> options) async {
+    allObjects = [];
     return allObjects.isEmpty;
   }
 

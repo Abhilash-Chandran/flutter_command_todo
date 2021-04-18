@@ -12,7 +12,6 @@ class UserManager {
   late Command<User, User> setCurrentUserCommand;
 
   User emptyUser = User(id: '', name: '');
-
   // Command<String, bool> userExistsCommand;
   UserManager() {
     createUserCommand = Command.createAsync<User, User>(
